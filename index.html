@@ -1,764 +1,992 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>R-Link Studio · 14-Day MVP Plan</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>R-Link Studio — 14-Day MVP Plan</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg: #0a0e1a;
-    --bg-card: #111827;
-    --bg-card-hover: #1a2333;
-    --border: #1e2942;
-    --text: #e5e7eb;
-    --text-dim: #9ca3af;
-    --text-muted: #6b7280;
-    --accent: #a78bfa;
-    --accent-dim: #6d28d9;
-    --green: #10b981;
-    --yellow: #f59e0b;
-    --blue: #3b82f6;
-    --pink: #ec4899;
-    --purple-glow: rgba(167, 139, 250, 0.15);
+    --rlink-dark: #020817;
+    --rlink-surface: #0a1628;
+    --rlink-surface-2: #0f1f38;
+    --rlink-purple: #6a1fbf;
+    --rlink-purple-glow: rgba(106, 31, 191, 0.4);
+    --rlink-green: #00c853;
+    --rlink-cyan: #06b6d4;
+    --rlink-pink: #ec4899;
+    --rlink-amber: #f59e0b;
+    --text-primary: #fafafa;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border: rgba(148, 163, 184, 0.12);
+    --border-strong: rgba(148, 163, 184, 0.22);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    background: var(--rlink-dark);
+    color: var(--text-primary);
     line-height: 1.6;
     min-height: 100vh;
-    background-image:
-      radial-gradient(ellipse at top left, var(--purple-glow), transparent 50%),
-      radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.08), transparent 50%);
-    background-attachment: fixed;
+    overflow-x: hidden;
+    position: relative;
   }
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 40px 32px 80px;
+
+  /* Ambient floating orbs */
+  .ambient-bg {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
   }
+  .orb {
+    position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.35;
+  }
+  .orb-1 {
+    width: 500px; height: 500px; background: var(--rlink-purple);
+    top: -100px; left: -100px; animation: ambientFloat1 22s ease-in-out infinite;
+  }
+  .orb-2 {
+    width: 450px; height: 450px; background: var(--rlink-cyan);
+    bottom: -150px; right: -150px; animation: ambientFloat2 28s ease-in-out infinite;
+  }
+  .orb-3 {
+    width: 350px; height: 350px; background: var(--rlink-green);
+    top: 40%; left: 50%; animation: ambientFloat3 26s ease-in-out infinite;
+    opacity: 0.18;
+  }
+  @keyframes ambientFloat1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(60px, -50px) scale(1.1); }
+    50% { transform: translate(-40px, 30px) scale(0.95); }
+    75% { transform: translate(30px, -60px) scale(1.05); }
+  }
+  @keyframes ambientFloat2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(-50px, 40px) scale(1.08); }
+    50% { transform: translate(35px, -45px) scale(0.92); }
+    75% { transform: translate(-25px, 55px) scale(1.12); }
+  }
+  @keyframes ambientFloat3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(45px, 35px) scale(0.95); }
+    50% { transform: translate(-55px, -25px) scale(1.1); }
+    75% { transform: translate(20px, -40px) scale(1); }
+  }
+
+  /* Main wrapper */
+  .wrap { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 60px 32px 100px; }
+
   /* Header */
-  .header { margin-bottom: 48px; }
-  .badge {
-    display: inline-block;
-    padding: 6px 14px;
-    background: rgba(167, 139, 250, 0.1);
-    border: 1px solid rgba(167, 139, 250, 0.3);
-    border-radius: 20px;
-    color: var(--accent);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
+  header.hero {
+    text-align: left; padding: 40px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+    position: relative;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    color: var(--rlink-cyan); font-size: 13px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 16px;
+    padding: 6px 14px; border: 1px solid rgba(6, 182, 212, 0.3);
+    border-radius: 999px; background: rgba(6, 182, 212, 0.08);
+  }
+  .eyebrow .pulse {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--rlink-cyan);
+    box-shadow: 0 0 0 0 var(--rlink-cyan); animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.7); }
+    70% { box-shadow: 0 0 0 12px rgba(6, 182, 212, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
   }
   h1 {
-    font-size: 56px;
-    font-weight: 700;
-    background: linear-gradient(135deg, #fff 0%, #c7d2fe 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 16px;
-    letter-spacing: -1.5px;
+    font-size: clamp(40px, 6vw, 72px); font-weight: 800; letter-spacing: -0.03em;
+    line-height: 1.05; margin-bottom: 18px;
+    background: linear-gradient(135deg, #fff 0%, #c7c4ff 40%, #6a1fbf 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .subtitle {
-    color: var(--text-dim);
-    font-size: 17px;
-    max-width: 720px;
-    line-height: 1.5;
+  .lede {
+    font-size: clamp(16px, 1.8vw, 19px); color: var(--text-secondary);
+    max-width: 760px; margin-bottom: 32px;
   }
-  /* Stats row */
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin: 40px 0;
-  }
+
+  /* Stat strip */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 28px; }
   .stat {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
+    padding: 20px 22px; border-radius: 14px;
+    background: linear-gradient(135deg, rgba(106,31,191,0.08), rgba(6,182,212,0.04));
+    border: 1px solid var(--border-strong);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    cursor: default;
   }
-  .stat-value {
-    font-size: 36px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 6px;
-    letter-spacing: -1px;
-  }
-  .stat-label {
-    color: var(--text-muted);
-    font-size: 11px;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    font-weight: 600;
-  }
-  /* Timeline */
-  .timeline-section {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 28px;
-    margin: 32px 0;
-  }
-  .section-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 20px;
-  }
-  .section-label .bar {
-    width: 4px;
-    height: 18px;
-    background: var(--accent);
-    border-radius: 2px;
-  }
-  .timeline-week-labels {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 16px;
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.5px;
-  }
-  .timeline-week-labels span { display: flex; align-items: center; gap: 6px; }
-  .timeline-week-labels .dot {
-    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
-  }
-  .dot-week1 { background: var(--blue); }
-  .dot-week2 { background: var(--accent); }
-  .dot-buffer { background: var(--yellow); }
-  .dot-milestone { background: var(--pink); }
-  .timeline-track {
-    position: relative;
-    height: 50px;
-    background: linear-gradient(to right, rgba(59, 130, 246, 0.1) 0% 50%, rgba(167, 139, 250, 0.1) 50% 100%);
-    border-radius: 8px;
-    margin-bottom: 16px;
-    display: grid;
-    grid-template-columns: repeat(14, 1fr);
-    align-items: center;
-    padding: 0 8px;
-  }
-  .day-marker {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--bg-card);
-    border: 2px solid var(--blue);
-    margin: 0 auto;
-    position: relative;
-  }
-  .day-marker.week2 { border-color: var(--accent); }
-  .day-marker.buffer { border-color: var(--yellow); background: var(--yellow); }
-  .day-marker.milestone { border-color: var(--pink); background: var(--pink); }
-  .timeline-day-labels {
-    display: grid;
-    grid-template-columns: repeat(14, 1fr);
-    text-align: center;
-    font-size: 10px;
-    color: var(--text-muted);
+  .stat:hover { transform: translateY(-3px); border-color: var(--rlink-purple); box-shadow: 0 12px 32px -12px var(--rlink-purple-glow); }
+  .stat-num {
+    font-size: 32px; font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--rlink-cyan), var(--rlink-purple));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
     margin-bottom: 4px;
   }
-  .timeline-day-labels div { line-height: 1.3; }
-  .timeline-day-labels .day-name { color: var(--text-dim); font-weight: 600; }
-  .timeline-notes {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    font-size: 12px;
-    color: var(--text-muted);
-    flex-wrap: wrap;
-    gap: 12px;
+  .stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+
+  /* Ticker */
+  .ticker {
+    margin: 0 -32px 48px; padding: 14px 0;
+    background: linear-gradient(90deg, transparent, rgba(106,31,191,0.08), transparent);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    overflow: hidden; white-space: nowrap; position: relative;
   }
-  /* Callout cards */
-  .callout {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    border-radius: 10px;
-    padding: 22px 24px;
-    margin: 20px 0;
+  .ticker-track {
+    display: inline-block; animation: ticker 50s linear infinite;
+    font-size: 13px; font-weight: 500; color: var(--text-secondary);
+    letter-spacing: 0.04em;
   }
-  .callout.green { border-left-color: var(--green); }
-  .callout.yellow { border-left-color: var(--yellow); }
-  .callout.blue { border-left-color: var(--blue); }
-  .callout-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    color: var(--accent);
-    font-weight: 700;
-    margin-bottom: 10px;
+  .ticker-track span { margin-right: 60px; }
+  .ticker-track .dot { color: var(--rlink-purple); margin: 0 24px; }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
-  .callout.green .callout-header { color: var(--green); }
-  .callout.yellow .callout-header { color: var(--yellow); }
-  .callout.blue .callout-header { color: var(--blue); }
-  .callout-body { color: var(--text-dim); font-size: 14px; line-height: 1.6; }
-  .callout-body strong { color: var(--text); }
-  .callout-body ul { margin-top: 10px; padding-left: 18px; }
-  .callout-body li { margin-bottom: 6px; }
-  /* Week sections */
-  .week-heading {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin: 56px 0 12px;
+
+  /* Sections */
+  section { margin-bottom: 64px; }
+  h2 {
+    font-size: 28px; font-weight: 700; letter-spacing: -0.02em;
+    margin-bottom: 8px; display: flex; align-items: center; gap: 14px;
   }
-  .week-pill {
-    background: linear-gradient(135deg, var(--blue), #1e40af);
-    color: #fff;
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
+  h2 .week-pill {
+    font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 999px;
+    background: linear-gradient(135deg, var(--rlink-purple), var(--rlink-cyan));
+    color: white; letter-spacing: 0.06em; text-transform: uppercase;
   }
-  .week-pill.week2 { background: linear-gradient(135deg, var(--accent), var(--accent-dim)); }
-  .week-pill.tracks { background: linear-gradient(135deg, var(--pink), #be185d); }
-  .week-heading h2 {
-    font-size: 28px;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: -0.5px;
+  h2.green-stripe::before {
+    content: ''; display: inline-block; width: 4px; height: 24px;
+    background: var(--rlink-green); border-radius: 2px;
   }
-  .week-intro {
-    color: var(--text-dim);
-    font-size: 15px;
-    margin-bottom: 28px;
-    max-width: 800px;
-  }
+  .section-sub { color: var(--text-secondary); margin-bottom: 28px; max-width: 720px; }
+
   /* Day cards grid */
-  .days-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  @media (max-width: 900px) {
-    .days-grid, .stats { grid-template-columns: repeat(2, 1fr); }
-    h1 { font-size: 40px; }
-  }
-  @media (max-width: 600px) {
-    .days-grid, .stats { grid-template-columns: 1fr; }
-    .container { padding: 24px 16px 60px; }
-    h1 { font-size: 32px; }
-  }
-  .day-card {
-    background: var(--bg-card);
+  .days { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
+  .day {
+    background: var(--rlink-surface);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-    transition: border-color 0.2s, transform 0.2s;
+    border-radius: 16px;
+    padding: 22px 22px 20px;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    position: relative; overflow: hidden;
   }
-  .day-card:hover {
-    border-color: rgba(167, 139, 250, 0.4);
+  .day::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--rlink-purple), var(--rlink-cyan));
+    opacity: 0.6; transition: opacity 0.25s;
   }
-  .day-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 8px;
+  .day:hover {
+    transform: translateY(-4px); border-color: var(--border-strong);
+    box-shadow: 0 18px 40px -16px rgba(106, 31, 191, 0.35);
   }
+  .day:hover::before { opacity: 1; }
+  .day.flash {
+    animation: cardFlash 1.4s ease-out;
+  }
+  @keyframes cardFlash {
+    0% { box-shadow: 0 0 0 0 var(--rlink-purple-glow), 0 0 0 0 rgba(106, 31, 191, 0); border-color: var(--rlink-purple); }
+    25% { box-shadow: 0 0 0 8px var(--rlink-purple-glow), 0 0 32px 8px rgba(106, 31, 191, 0.5); border-color: var(--rlink-purple); }
+    100% { box-shadow: 0 0 0 0 rgba(106, 31, 191, 0); border-color: var(--border); }
+  }
+  .day.special { background: linear-gradient(135deg, rgba(0,200,83,0.08), rgba(6,182,212,0.04)); border-color: rgba(0,200,83,0.25); }
+  .day.special::before { background: linear-gradient(90deg, var(--rlink-green), var(--rlink-cyan)); opacity: 1; }
+  .day.buffer { background: linear-gradient(135deg, rgba(245,158,11,0.06), rgba(106,31,191,0.04)); border-color: rgba(245,158,11,0.25); }
+  .day.buffer::before { background: var(--rlink-amber); opacity: 1; }
+
+  .day-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 10px; gap: 12px; }
   .day-num {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
+    font-size: 13px; font-weight: 700; color: var(--rlink-cyan);
+    text-transform: uppercase; letter-spacing: 0.1em;
   }
   .day-date {
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-  .day-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 12px;
-    line-height: 1.3;
-  }
-  .day-body {
-    color: var(--text-dim);
-    font-size: 13px;
-    line-height: 1.55;
-  }
-  .day-body ul { padding-left: 16px; }
-  .day-body li { margin-bottom: 6px; }
-  .day-body code {
-    background: rgba(167, 139, 250, 0.1);
-    color: var(--accent);
-    padding: 1px 5px;
-    border-radius: 3px;
-    font-size: 11px;
-    font-family: "SF Mono", Monaco, Consolas, monospace;
-  }
-  /* Tracks */
-  .tracks-intro {
-    color: var(--text-dim);
-    font-size: 15px;
-    margin-bottom: 28px;
-    max-width: 800px;
-  }
-  .track-card {
-    background: var(--bg-card);
+    font-size: 11px; color: var(--text-muted); font-weight: 500;
+    padding: 3px 8px; border-radius: 6px; background: rgba(255,255,255,0.04);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 28px;
-    margin-bottom: 18px;
   }
-  .track-card.track-kim {
-    border: 1px solid rgba(167, 139, 250, 0.4);
-    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(167, 139, 250, 0.05) 100%);
+  .day-title { font-size: 17px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; line-height: 1.35; }
+  .day ul { list-style: none; padding: 0; }
+  .day li {
+    color: var(--text-secondary); font-size: 14px; line-height: 1.55;
+    padding-left: 20px; position: relative; margin-bottom: 8px;
   }
-  .track-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
+  .day li:last-child { margin-bottom: 0; }
+  .day li::before {
+    content: ''; position: absolute; left: 0; top: 9px;
+    width: 6px; height: 6px; border-radius: 50%; background: var(--rlink-purple);
   }
-  .track-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  .day.special li::before { background: var(--rlink-green); }
+  .day.buffer li::before { background: var(--rlink-amber); }
+  .day li code, .day li strong code { color: var(--rlink-cyan); background: rgba(6,182,212,0.08); padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+  .day strong { color: var(--text-primary); font-weight: 600; }
+
+  /* Callout cards */
+  .callout {
+    padding: 24px 28px; border-radius: 16px;
+    background: linear-gradient(135deg, rgba(106,31,191,0.12), rgba(6,182,212,0.06));
+    border: 1px solid rgba(106, 31, 191, 0.25); margin-bottom: 48px;
+    position: relative; overflow: hidden;
   }
-  .track-pill {
-    background: rgba(167, 139, 250, 0.15);
-    color: var(--accent);
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+  .callout.green { background: linear-gradient(135deg, rgba(0,200,83,0.10), rgba(6,182,212,0.04)); border-color: rgba(0,200,83,0.25); }
+  .callout.amber { background: linear-gradient(135deg, rgba(245,158,11,0.10), rgba(106,31,191,0.04)); border-color: rgba(245,158,11,0.30); }
+  .callout-head {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--rlink-cyan); margin-bottom: 12px;
   }
-  .track-timing {
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-  .track-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 16px;
-    letter-spacing: -0.3px;
-  }
-  .track-body {
-    color: var(--text-dim);
-    font-size: 14px;
-    line-height: 1.65;
-  }
-  .track-body ul { padding-left: 18px; margin-top: 8px; }
-  .track-body li { margin-bottom: 8px; }
-  .track-body strong { color: var(--text); }
-  .track-body code {
-    background: rgba(167, 139, 250, 0.1);
-    color: var(--accent);
-    padding: 1px 6px;
-    border-radius: 3px;
-    font-size: 12px;
-    font-family: "SF Mono", Monaco, Consolas, monospace;
-  }
-  /* Bottom sections */
-  .section-block {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 28px;
-    margin: 24px 0;
-  }
-  .section-block h3 {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 20px;
-    color: #fff;
-    margin-bottom: 18px;
-    font-weight: 700;
-  }
-  .section-block h3::before {
-    content: "";
-    width: 4px;
-    height: 22px;
-    background: var(--accent);
-    border-radius: 2px;
-  }
-  .section-block ol, .section-block ul {
-    padding-left: 22px;
-    color: var(--text-dim);
-    font-size: 14px;
-    line-height: 1.7;
-  }
-  .section-block li { margin-bottom: 8px; }
-  .section-block strong { color: var(--text); }
+  .callout.green .callout-head { color: var(--rlink-green); }
+  .callout.amber .callout-head { color: var(--rlink-amber); }
+  .callout p { color: var(--text-primary); font-size: 15px; line-height: 1.7; }
+  .callout p + p { margin-top: 10px; }
+  .callout ul { margin-top: 10px; padding-left: 22px; }
+  .callout li { color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 6px; }
+  .callout li::marker { color: var(--rlink-cyan); }
+
+  /* Generic list section */
+  .list-section { background: var(--rlink-surface); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; }
+  .list-section h3 { font-size: 18px; font-weight: 600; margin-bottom: 14px; color: var(--text-primary); display: flex; align-items: center; gap: 10px; }
+  .list-section ol, .list-section ul { padding-left: 22px; }
+  .list-section li { color: var(--text-secondary); font-size: 14.5px; line-height: 1.7; margin-bottom: 8px; }
+  .list-section li::marker { color: var(--rlink-purple); font-weight: 700; }
+  .list-section strong { color: var(--text-primary); }
+
   /* Footer */
-  .footer {
-    margin-top: 60px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    color: var(--text-muted);
-    font-size: 12px;
-    flex-wrap: wrap;
-    gap: 12px;
+  footer {
+    margin-top: 60px; padding-top: 28px; border-top: 1px solid var(--border);
+    color: var(--text-muted); font-size: 13px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+
+  /* Timeline strip */
+  .timeline-section {
+    margin: 48px 0 32px;
+    position: relative;
+  }
+  .timeline-heading {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    margin-bottom: 24px;
+  }
+  .timeline-heading h2 {
+    font-size: 22px; font-weight: 700; letter-spacing: -0.01em; margin: 0;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .timeline-heading h2::before {
+    content: ''; width: 4px; height: 22px; border-radius: 2px;
+    background: linear-gradient(180deg, var(--rlink-purple), var(--rlink-cyan));
+  }
+  .timeline-legend { display: flex; gap: 18px; font-size: 12px; color: var(--text-muted); }
+  .timeline-legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .timeline-legend .dot {
+    width: 9px; height: 9px; border-radius: 50%;
+  }
+  .timeline-legend .week1 { background: var(--rlink-purple); }
+  .timeline-legend .week2 { background: var(--rlink-cyan); }
+  .timeline-legend .buffer { background: var(--rlink-amber); }
+  .timeline-legend .special { background: var(--rlink-green); }
+
+  .timeline-strip {
+    position: relative;
+    background:
+      radial-gradient(ellipse 80% 50% at 25% 0%, rgba(106, 31, 191, 0.10), transparent 70%),
+      radial-gradient(ellipse 80% 50% at 75% 0%, rgba(6, 182, 212, 0.10), transparent 70%),
+      linear-gradient(180deg, rgba(10, 22, 40, 0.7), rgba(10, 22, 40, 0.4));
+    border: 1px solid var(--border-strong);
+    border-radius: 20px;
+    padding: 22px 22px 18px;
+    overflow: visible;
+  }
+  .timeline-phases {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;
+  }
+  .timeline-phase {
+    padding: 7px 14px; border-radius: 999px; border: 1px solid;
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .timeline-phase .phase-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .timeline-phase.w1 {
+    background: linear-gradient(90deg, rgba(106,31,191,0.20), rgba(106,31,191,0.05));
+    border-color: rgba(106,31,191,0.38); color: #d4b8ff;
+  }
+  .timeline-phase.w1 .phase-dot { background: var(--rlink-purple); box-shadow: 0 0 10px var(--rlink-purple); }
+  .timeline-phase.w2 {
+    background: linear-gradient(270deg, rgba(6,182,212,0.20), rgba(6,182,212,0.05));
+    border-color: rgba(6,182,212,0.38); color: #a4e5f5;
+    justify-content: flex-end;
+  }
+  .timeline-phase.w2 .phase-dot { background: var(--rlink-cyan); box-shadow: 0 0 10px var(--rlink-cyan); order: 2; }
+
+  .timeline-rail-wrap {
+    position: relative; padding: 0;
+  }
+  .timeline-rail {
+    position: absolute; left: 14px; right: 14px; top: 13px;
+    height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg,
+      rgba(106, 31, 191, 0.18) 0%,
+      var(--rlink-purple) 8%,
+      var(--rlink-purple) 46%,
+      var(--rlink-cyan) 54%,
+      var(--rlink-cyan) 92%,
+      rgba(6, 182, 212, 0.18) 100%);
+    opacity: 0.5;
+  }
+  .timeline-rail-progress {
+    position: absolute; left: 14px; top: 13px;
+    height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--rlink-cyan), var(--rlink-purple));
+    width: 0;
+    box-shadow: 0 0 10px var(--rlink-purple-glow);
+    transition: width 1.4s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .timeline-nodes {
+    position: relative; display: grid; grid-template-columns: repeat(14, 1fr);
+    gap: 0;
+  }
+  .timeline-node {
+    position: relative; display: flex; flex-direction: column; align-items: center;
+    cursor: pointer; padding-top: 0; opacity: 0;
+    transform: translateY(8px);
+    animation: nodeIn 0.5s ease-out forwards;
+    user-select: none;
+  }
+  .timeline-node:nth-child(1) { animation-delay: 0.05s; }
+  .timeline-node:nth-child(2) { animation-delay: 0.10s; }
+  .timeline-node:nth-child(3) { animation-delay: 0.15s; }
+  .timeline-node:nth-child(4) { animation-delay: 0.20s; }
+  .timeline-node:nth-child(5) { animation-delay: 0.25s; }
+  .timeline-node:nth-child(6) { animation-delay: 0.30s; }
+  .timeline-node:nth-child(7) { animation-delay: 0.35s; }
+  .timeline-node:nth-child(8) { animation-delay: 0.40s; }
+  .timeline-node:nth-child(9) { animation-delay: 0.45s; }
+  .timeline-node:nth-child(10) { animation-delay: 0.50s; }
+  .timeline-node:nth-child(11) { animation-delay: 0.55s; }
+  .timeline-node:nth-child(12) { animation-delay: 0.60s; }
+  .timeline-node:nth-child(13) { animation-delay: 0.65s; }
+  .timeline-node:nth-child(14) { animation-delay: 0.70s; }
+  @keyframes nodeIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .timeline-node .node-dot {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--rlink-dark);
+    border: 2px solid var(--rlink-purple);
+    box-shadow: 0 0 0 3px rgba(106, 31, 191, 0.10), inset 0 0 6px rgba(106, 31, 191, 0.5);
+    transition: all 0.25s ease;
+    z-index: 2;
+    position: relative;
+  }
+  .timeline-node[data-week="2"] .node-dot {
+    border-color: var(--rlink-cyan);
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.10), inset 0 0 6px rgba(6, 182, 212, 0.5);
+  }
+  .timeline-node[data-kind="buffer"] .node-dot {
+    border-color: var(--rlink-amber);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12), inset 0 0 6px rgba(245, 158, 11, 0.5);
+  }
+  .timeline-node[data-kind="special"] .node-dot {
+    border-color: var(--rlink-green);
+    box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.16), inset 0 0 8px rgba(0, 200, 83, 0.6);
+    animation: pulseGreen 2.5s ease-in-out infinite;
+  }
+  @keyframes pulseGreen {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.16), inset 0 0 8px rgba(0, 200, 83, 0.6); }
+    50% { box-shadow: 0 0 0 7px rgba(0, 200, 83, 0.25), inset 0 0 10px rgba(0, 200, 83, 0.8); }
+  }
+  .timeline-node:hover .node-dot {
+    transform: scale(1.35);
+    background: var(--rlink-purple);
+    box-shadow: 0 0 0 5px rgba(106, 31, 191, 0.22), 0 0 16px var(--rlink-purple-glow);
+  }
+  .timeline-node[data-week="2"]:hover .node-dot {
+    background: var(--rlink-cyan);
+    box-shadow: 0 0 0 5px rgba(6, 182, 212, 0.22), 0 0 16px rgba(6, 182, 212, 0.45);
+  }
+  .timeline-node[data-kind="buffer"]:hover .node-dot {
+    background: var(--rlink-amber);
+    box-shadow: 0 0 0 5px rgba(245, 158, 11, 0.25), 0 0 16px rgba(245, 158, 11, 0.45);
+  }
+  .timeline-node[data-kind="special"]:hover .node-dot {
+    background: var(--rlink-green);
+    box-shadow: 0 0 0 5px rgba(0, 200, 83, 0.32), 0 0 18px rgba(0, 200, 83, 0.55);
+  }
+  .timeline-node .node-day {
+    margin-top: 12px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-muted);
+    transition: color 0.2s;
+  }
+  .timeline-node:hover .node-day { color: var(--text-primary); }
+  .timeline-node[data-kind="special"] .node-day { color: #6ee7a8; }
+  .timeline-node[data-kind="buffer"] .node-day { color: #fbbf24; }
+  .timeline-node .node-date {
+    font-size: 9.5px; color: var(--text-muted); margin-top: 2px;
+    white-space: nowrap; font-variant-numeric: tabular-nums;
+  }
+  .timeline-node .node-tooltip {
+    position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(8px);
+    background: var(--rlink-dark);
+    border: 1px solid var(--rlink-purple);
+    color: var(--text-primary); font-size: 12px; font-weight: 500;
+    padding: 8px 12px; border-radius: 10px;
+    white-space: nowrap; pointer-events: none;
+    opacity: 0; transition: opacity 0.2s, transform 0.2s;
+    z-index: 5;
+    box-shadow: 0 8px 24px -8px rgba(106, 31, 191, 0.5);
+    max-width: 220px; white-space: normal; text-align: center;
+    min-width: 140px;
+  }
+  .timeline-node[data-week="2"] .node-tooltip { border-color: var(--rlink-cyan); }
+  .timeline-node[data-kind="buffer"] .node-tooltip { border-color: var(--rlink-amber); }
+  .timeline-node[data-kind="special"] .node-tooltip { border-color: var(--rlink-green); }
+  .timeline-node:hover .node-tooltip {
+    opacity: 1; transform: translateX(-50%) translateY(2px);
+  }
+
+  /* Edge tooltips: anchor to the visible edge so they don't overflow the page */
+  .timeline-node:nth-child(1) .node-tooltip,
+  .timeline-node:nth-child(2) .node-tooltip {
+    left: 0; transform: translateX(0) translateY(8px);
+  }
+  .timeline-node:nth-child(1):hover .node-tooltip,
+  .timeline-node:nth-child(2):hover .node-tooltip {
+    transform: translateX(0) translateY(2px);
+  }
+  .timeline-node:nth-child(13) .node-tooltip,
+  .timeline-node:nth-child(14) .node-tooltip {
+    left: auto; right: 0; transform: translateX(0) translateY(8px);
+  }
+  .timeline-node:nth-child(13):hover .node-tooltip,
+  .timeline-node:nth-child(14):hover .node-tooltip {
+    transform: translateX(0) translateY(2px);
+  }
+
+
+  /* Easter egg emojis */
+  .easter-egg {
+    position: fixed; pointer-events: none; font-size: 32px; z-index: 999;
+    animation: floatUp 1.2s ease-out forwards;
+  }
+  @keyframes floatUp {
+    0% { transform: translate(-50%, -50%) scale(0.5) rotate(0deg); opacity: 1; }
+    100% { transform: translate(-50%, -200%) scale(1.2) rotate(45deg); opacity: 0; }
+  }
+
+  /* Kim's track — subtle visual treatment to mark project-owner section */
+  .day.track-kim {
+    background: linear-gradient(135deg, rgba(106,31,191,0.10), rgba(236,72,153,0.05));
+    border-color: rgba(106,31,191,0.35);
+  }
+  .day.track-kim::before {
+    background: linear-gradient(90deg, var(--rlink-purple), var(--rlink-pink));
+    opacity: 1;
+  }
+  .day.track-kim li::before { background: var(--rlink-purple); }
+  .day.track-kim .day-title { color: #e8d6ff; }
+
+  /* Responsive */
+  @media (max-width: 820px) {
+    .timeline-node .node-date { display: none; }
+    .timeline-node .node-day { font-size: 9px; }
+    .timeline-strip { padding: 18px 14px 14px; }
+    .timeline-phases { grid-template-columns: 1fr; gap: 6px; margin-bottom: 16px; }
+    .timeline-phase.w2 { justify-content: flex-start; }
+    .timeline-phase.w2 .phase-dot { order: 0; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 32px 18px 60px; }
+    h1 { font-size: 36px; }
+    .ticker { margin: 0 -18px 32px; }
+    .days { grid-template-columns: 1fr; }
+    .timeline-node .node-dot { width: 14px; height: 14px; }
+    .timeline-rail, .timeline-rail-progress { top: 11px; left: 10px; right: 10px; }
+    .timeline-rail-progress { right: auto; }
   }
 </style>
 </head>
 <body>
-<div class="container">
 
-  <!-- Header -->
-  <header class="header">
-    <span class="badge">⬢ Internal Plan · R-Link Studio</span>
+<div class="ambient-bg">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow"><span class="pulse"></span> Internal Plan · R-Link Studio</div>
     <h1>14-Day MVP Plan</h1>
-    <p class="subtitle">Locking the real-time pipeline at 80–100 concurrent participants, finishing the admin to 80%, and putting Kim plus a 5–10 user beta cohort on staging by Day 14. Production cutover follows in week 3.</p>
+    <p class="lede">
+      Locking the real-time pipeline at 80-100 concurrent participants, finishing the admin to 80%, and putting Kim plus a 5-10 user beta cohort on staging by Day 14. Production cutover follows in week 3.
+    </p>
+    <div class="stats">
+      <div class="stat"><div class="stat-num">14</div><div class="stat-label">Calendar Days</div></div>
+      <div class="stat"><div class="stat-num">80-100</div><div class="stat-label">Participants Target</div></div>
+      <div class="stat"><div class="stat-num">5-10</div><div class="stat-label">Beta Users on Day 14</div></div>
+      <div class="stat"><div class="stat-num">80%</div><div class="stat-label">Admin Functional</div></div>
+    </div>
   </header>
 
-  <!-- Stats -->
-  <div class="stats">
-    <div class="stat"><div class="stat-value">14</div><div class="stat-label">Calendar Days</div></div>
-    <div class="stat"><div class="stat-value">80–100</div><div class="stat-label">Participants Target</div></div>
-    <div class="stat"><div class="stat-value">5–10</div><div class="stat-label">Beta Users on Day 14</div></div>
-    <div class="stat"><div class="stat-value">80%</div><div class="stat-label">Admin Functional</div></div>
+  <section class="timeline-section">
+    <div class="timeline-heading">
+      <h2>14-Day Timeline</h2>
+      <div class="timeline-legend">
+        <span><span class="dot week1"></span> Week 1</span>
+        <span><span class="dot week2"></span> Week 2</span>
+        <span><span class="dot buffer"></span> Buffer</span>
+        <span><span class="dot special"></span> Milestone</span>
+      </div>
+    </div>
+    <div class="timeline-strip" id="timeline-strip">
+      <div class="timeline-phases">
+        <div class="timeline-phase w1"><span class="phase-dot"></span>Week 1 · Real-Time Stability</div>
+        <div class="timeline-phase w2">Week 2 · Admin + Beta Prep<span class="phase-dot"></span></div>
+      </div>
+      <div class="timeline-rail-wrap">
+        <div class="timeline-rail"></div>
+        <div class="timeline-rail-progress" id="rail-progress"></div>
+        <div class="timeline-nodes">
+          <div class="timeline-node" data-target="day-1" data-week="1">
+            <div class="node-dot"></div>
+            <div class="node-day">Day 1</div>
+            <div class="node-date">Wed 5/13</div>
+            <div class="node-tooltip">Audit + bug list</div>
+          </div>
+          <div class="timeline-node" data-target="day-2" data-week="1">
+            <div class="node-dot"></div>
+            <div class="node-day">Day 2</div>
+            <div class="node-date">Thu 5/14</div>
+            <div class="node-tooltip">Load test harness (25 → 100)</div>
+          </div>
+          <div class="timeline-node" data-target="day-3" data-week="1">
+            <div class="node-dot"></div>
+            <div class="node-day">Day 3</div>
+            <div class="node-date">Fri 5/15</div>
+            <div class="node-tooltip">Fix top bugs from audit + load test</div>
+          </div>
+          <div class="timeline-node" data-target="day-4" data-week="1">
+            <div class="node-dot"></div>
+            <div class="node-day">Day 4</div>
+            <div class="node-date">Sat 5/16</div>
+            <div class="node-tooltip">Webinar flow + public landing</div>
+          </div>
+          <div class="timeline-node" data-target="day-5" data-week="1">
+            <div class="node-dot"></div>
+            <div class="node-day">Day 5</div>
+            <div class="node-date">Sun 5/17</div>
+            <div class="node-tooltip">Livestream + chat hardening</div>
+          </div>
+          <div class="timeline-node" data-target="day-6" data-week="1">
+            <div class="node-dot"></div>
+            <div class="node-day">Day 6</div>
+            <div class="node-date">Mon 5/18</div>
+            <div class="node-tooltip">Screen share + recording</div>
+          </div>
+          <div class="timeline-node" data-target="day-7" data-week="1" data-kind="special">
+            <div class="node-dot"></div>
+            <div class="node-day">Day 7</div>
+            <div class="node-date">Tue 5/19</div>
+            <div class="node-tooltip">Week 1 load test repeat + Kim status</div>
+          </div>
+          <div class="timeline-node" data-target="day-8" data-week="2">
+            <div class="node-dot"></div>
+            <div class="node-day">Day 8</div>
+            <div class="node-date">Wed 5/20</div>
+            <div class="node-tooltip">Admin: Users + roles</div>
+          </div>
+          <div class="timeline-node" data-target="day-9" data-week="2">
+            <div class="node-dot"></div>
+            <div class="node-day">Day 9</div>
+            <div class="node-date">Thu 5/21</div>
+            <div class="node-tooltip">Admin: Recordings + transcripts</div>
+          </div>
+          <div class="timeline-node" data-target="day-10" data-week="2">
+            <div class="node-dot"></div>
+            <div class="node-day">Day 10</div>
+            <div class="node-date">Fri 5/22</div>
+            <div class="node-tooltip">Admin: System settings + analytics shell</div>
+          </div>
+          <div class="timeline-node" data-target="day-11" data-week="2">
+            <div class="node-dot"></div>
+            <div class="node-day">Day 11</div>
+            <div class="node-date">Sat 5/23</div>
+            <div class="node-tooltip">Admin: Affiliates + Rewards parity</div>
+          </div>
+          <div class="timeline-node" data-target="day-12" data-week="2">
+            <div class="node-dot"></div>
+            <div class="node-day">Day 12</div>
+            <div class="node-date">Sun 5/24</div>
+            <div class="node-tooltip">Beta cohort prep</div>
+          </div>
+          <div class="timeline-node" data-target="day-13" data-week="2" data-kind="buffer">
+            <div class="node-dot"></div>
+            <div class="node-day">Day 13</div>
+            <div class="node-date">Mon 5/25</div>
+            <div class="node-tooltip">Buffer + internal dry run (Memorial Day)</div>
+          </div>
+          <div class="timeline-node" data-target="day-14" data-week="2" data-kind="special">
+            <div class="node-dot"></div>
+            <div class="node-day">Day 14</div>
+            <div class="node-date">Tue 5/26</div>
+            <div class="node-tooltip">Beta dry run + Go/No-Go</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker">
+    <div class="ticker-track">
+      <span>Day 1: Wed May 13</span><span class="dot">●</span>
+      <span>Day 14: Tue May 26</span><span class="dot">●</span>
+      <span>Memorial Day = Day 13 (buffer)</span><span class="dot">●</span>
+      <span>QA tests this week = live ground truth</span><span class="dot">●</span>
+      <span>Go / No-Go meeting Day 14</span><span class="dot">●</span>
+      <span>Day 1: Wed May 13</span><span class="dot">●</span>
+      <span>Day 14: Tue May 26</span><span class="dot">●</span>
+      <span>Memorial Day = Day 13 (buffer)</span><span class="dot">●</span>
+      <span>QA tests this week = live ground truth</span><span class="dot">●</span>
+      <span>Go / No-Go meeting Day 14</span><span class="dot">●</span>
+    </div>
   </div>
 
-  <!-- Timeline -->
-  <div class="timeline-section">
-    <div class="section-label"><span class="bar"></span>14-Day Timeline</div>
-    <div class="timeline-week-labels">
-      <span><span class="dot dot-week1"></span>Week 1</span>
-      <span><span class="dot dot-week2"></span>Week 2</span>
-      <span><span class="dot dot-buffer"></span>Buffer</span>
-      <span><span class="dot dot-milestone"></span>Milestone</span>
+  <section>
+    <div class="callout green">
+      <div class="callout-head">🎯 Day-14 Bar</div>
+      <p>Staging proven to hold 80-100 concurrent participants across meeting, webinar, and livestream flows, with chat, screen share, Deepgram captions, and recording all working end-to-end. Admin panel 80% functional. Kim plus 5-10 beta users live on staging. <strong>Production cutover follows in week 3.</strong></p>
     </div>
-    <div class="timeline-track">
-      <div class="day-marker"></div><div class="day-marker"></div><div class="day-marker"></div>
-      <div class="day-marker"></div><div class="day-marker"></div><div class="day-marker"></div>
-      <div class="day-marker"></div>
-      <div class="day-marker week2"></div><div class="day-marker week2"></div><div class="day-marker week2"></div>
-      <div class="day-marker week2"></div><div class="day-marker week2"></div>
-      <div class="day-marker buffer"></div>
-      <div class="day-marker milestone"></div>
-    </div>
-    <div class="timeline-day-labels">
-      <div><div class="day-name">DAY 1</div>Wed 5/13</div>
-      <div><div class="day-name">DAY 2</div>Thu 5/14</div>
-      <div><div class="day-name">DAY 3</div>Fri 5/15</div>
-      <div><div class="day-name">DAY 4</div>Sat 5/16</div>
-      <div><div class="day-name">DAY 5</div>Sun 5/17</div>
-      <div><div class="day-name">DAY 6</div>Mon 5/18</div>
-      <div><div class="day-name">DAY 7</div>Tue 5/19</div>
-      <div><div class="day-name">DAY 8</div>Wed 5/20</div>
-      <div><div class="day-name">DAY 9</div>Thu 5/21</div>
-      <div><div class="day-name">DAY 10</div>Fri 5/22</div>
-      <div><div class="day-name">DAY 11</div>Sat 5/23</div>
-      <div><div class="day-name">DAY 12</div>Sun 5/24</div>
-      <div><div class="day-name">DAY 13</div>Mon 5/25</div>
-      <div><div class="day-name">DAY 14</div>Tue 5/26</div>
-    </div>
-    <div class="timeline-notes">
-      <span>Day 1: Wed May 13</span>
-      <span>Day 14: Tue May 26</span>
-      <span>Memorial Day = Day 13 (buffer)</span>
-      <span>QA tests this week = live ground truth</span>
-      <span>Go / No-Go meeting Day 14</span>
-    </div>
-  </div>
 
-  <!-- Day-14 Bar -->
-  <div class="callout">
-    <div class="callout-header">🎯 Day-14 Bar</div>
-    <div class="callout-body">Staging proven to hold 80–100 concurrent participants across meeting, webinar, and livestream flows, with chat, screen share, Deepgram captions, and recording all working end-to-end. Admin panel 80% functional. Kim plus 5–10 beta users live on staging. <strong>Production cutover follows in week 3.</strong></div>
-  </div>
+    <div class="callout">
+      <div class="callout-head">📋 Visibility Ground Rule · Monday is the Source of Truth</div>
+      <p>Every bug, PR, assignment, and milestone in this plan mirrors to a Monday board so the team can see what's moving without DMing each other. Triage dashboard, deploy events, CS notifications, and the team's PR pipeline all push status into Monday automatically. Track D covers the wiring.</p>
+    </div>
 
-  <!-- Visibility Rule -->
-  <div class="callout blue">
-    <div class="callout-header">📋 Visibility Ground Rule · Monday is the Source of Truth</div>
-    <div class="callout-body">Every bug, PR, assignment, and milestone in this plan mirrors to a Monday board so the team can see what's moving without DMing each other. Triage dashboard, deploy events, CS notifications, and the team's PR pipeline all push status into Monday automatically. Track D covers the wiring.</div>
-  </div>
-
-  <!-- QA Tests -->
-  <div class="callout yellow">
-    <div class="callout-header">⚡ Pre-Day-1 Input · QA Tests This Week</div>
-    <div class="callout-body">QA testers are running two large simulated-participant tests this week (15–25 participants each). Their findings are the real-world ground truth that synthetic load can't fake. Both test outputs feed directly into Day 1's audit and Day 3's fix queue.
+    <div class="callout">
+      <div class="callout-head">⚡ Pre-Day-1 Input · QA Tests This Week</div>
+      <p>QA testers are running two large simulated-participant tests this week (15-25 participants each). Their findings are the real-world ground truth that synthetic load can't fake. Both test outputs feed directly into Day 1's audit and Day 3's fix queue.</p>
       <ul>
         <li>Every bug gets logged on the triage board AND mirrored to Monday the moment it's seen, and is fixed immediately</li>
         <li>Performance metrics (CPU, RAM, dropouts, latencies) get captured during the runs, not after</li>
       </ul>
     </div>
-  </div>
 
-  <!-- Calendar Notes -->
-  <div class="callout green">
-    <div class="callout-header">📅 Calendar Notes</div>
-    <div class="callout-body">Day 13 (Mon 5/25) is Memorial Day. Use it as a buffer and run an internal-team-only dry run, not beta-user-facing.</div>
-  </div>
+    <div class="callout amber">
+      <div class="callout-head">📅 Calendar Notes</div>
+      <p>Day 13 (Mon 5/25) is Memorial Day. Use it as a buffer and run an internal-team-only dry run, not beta-user-facing.</p>
+    </div>
+  </section>
 
-  <!-- WEEK 1 -->
-  <div class="week-heading">
-    <span class="week-pill">Week 1</span>
-    <h2>Real-Time Stability</h2>
-  </div>
-  <p class="week-intro">The single biggest risk to the 80–100 number is real-time pipeline drift, not feature gaps. Week 1 locks the pipeline. Days 1–7 = Wed 5/13 through Tue 5/19.</p>
+  <section>
+    <h2><span class="week-pill">Week 1</span> Real-Time Stability</h2>
+    <p class="section-sub">The single biggest risk to the 80-100 number is real-time pipeline drift, not feature gaps. Week 1 locks the pipeline. Days 1-7 = Wed 5/13 through Tue 5/19.</p>
 
-  <div class="days-grid">
-    <div class="day-card">
-      <div class="day-meta"><span class="day-num">Day 1</span><span class="day-date">Wed 5/13</span></div>
-      <div class="day-title">Audit + bug list</div>
-      <div class="day-body"><ul>
-        <li>Run the full meeting / webinar / livestream flow end-to-end in staging. Record screen.</li>
-        <li>Pull open GitHub issues + QA triage board. Pull every bug from this week's QA 15–25 participant tests. Dedupe and rank by impact on 80–100 person sessions.</li>
-        <li>Verify Agora subscription tier and concurrent-stream limits in writing.</li>
-        <li>Confirm Doppler <code>r-link-studio-redux</code> dev and prod configs are intact post-team-exit.</li>
-      </ul></div>
-    </div>
-    <div class="day-card">
-      <div class="day-meta"><span class="day-num">Day 2</span><span class="day-date">Thu 5/14</span></div>
-      <div class="day-title">Load test harness (bridge QA 25 → target 100)</div>
-      <div class="day-body"><ul>
-        <li>Wire up synthetic-participant tool (Agora Cloud Player SDK or k6 + headless Chrome via Playwright pool).</li>
-        <li>Step-load: 25 first (match QA baseline → validate harness), then 50, then 100. See where it breaks, not just whether.</li>
-        <li>At target 100: half publishing audio, 10 publishing video, 1 screen sharing.</li>
-        <li>Capture: connect time, audio dropouts, video freezes, Socket.IO latency, server CPU/RAM, Mongo pool saturation.</li>
-      </ul></div>
-    </div>
-    <div class="day-card">
-      <div class="day-meta"><span class="day-num">Day 3</span><span class="day-date">Fri 5/15</span></div>
-      <div class="day-title">Fix top bugs from audit + load test</div>
-      <div class="day-body"><ul>
-        <li>Fix top issues from Day 1 audit + Day 2 load test. Prioritize anything that breaks &gt; 1% of joins or fails &gt; 10 participants.</li>
-        <li>Compare metrics from QA's recorded runs against Day 2's synthetic numbers at the same participant count.</li>
-        <li>If real 25 diverges from synthetic 25, the harness is lying — fix that before trusting the 100 number.</li>
-      </ul></div>
-    </div>
-    <div class="day-card">
-      <div class="day-meta"><span class="day-num">Day 4</span><span class="day-date">Sat 5/16</span></div>
-      <div class="day-title">Webinar flow + public landing</div>
-      <div class="day-body"><ul>
-        <li>Validate: scheduled webinar create → public landing → registration → join → broadcast → end → replay → recording surface.</li>
-        <li>Fix dashboard webinar end fallback edge cases.</li>
-      </ul></div>
-    </div>
-    <div class="day-card">
-      <div class="day-meta"><span class="day-num">Day 5</span><span class="day-date">Sun 5/17</span></div>
-      <div class="day-title">Livestream + chat hardening</div>
-      <div class="day-body"><ul>
-        <li>Validate livestream path. Confirm RTM chat works at 100-person scale without Presence add-on (we are NOT enabling <code>withPresence</code>).</li>
-        <li>Stress chat: 100 participants posting once every 5 seconds for 5 minutes. Measure Socket.IO + RTM behavior.</li>
-      </ul></div>
-    </div>
-    <div class="day-card">
-      <div class="day-meta"><span class="day-num">Day 6</span><span class="day-date">Mon 5/18</span></div>
-      <div class="day-title">Screen share + recording</div>
-      <div class="day-body"><ul>
-        <li>Validate screen share with viewer layout retention (commit <code>d57b384</code> fix).</li>
-        <li>Validate recording → S3 → playback. Confirm Deepgram Nova-3 transcripts land in JSONL.</li>
-      </ul></div>
-    </div>
-    <div class="day-card">
-      <div class="day-meta"><span class="day-num">Day 7</span><span class="day-date">Tue 5/19</span></div>
-      <div class="day-title">Week 1 load test repeat + Kim status</div>
-      <div class="day-body"><ul>
-        <li>Re-run the Day 2 load test. Compare deltas. Capture metric baseline.</li>
-        <li>5-bullet status to Kim: what's locked, what's flaky, what's deferred.</li>
-      </ul></div>
-    </div>
-  </div>
+    <div class="days">
+      <div class="day" id="day-1">
+        <div class="day-head"><span class="day-num">Day 1</span><span class="day-date">Wed 5/13</span></div>
+        <div class="day-title">Audit + bug list</div>
+        <ul>
+          <li>Run the full meeting / webinar / livestream flow end-to-end in staging. Record screen.</li>
+          <li>Pull open GitHub issues + QA triage board. <strong>Pull every bug from this week's QA 15-25 participant tests.</strong> Dedupe and rank by impact on 80-100 person sessions.</li>
+          <li>Verify Agora subscription tier and concurrent-stream limits in writing.</li>
+          <li>Confirm Doppler <code>r-link-studio-redux</code> dev and prod configs are intact post-team-exit.</li>
+        </ul>
+      </div>
 
-  <!-- WEEK 2 -->
-  <div class="week-heading">
-    <span class="week-pill week2">Week 2</span>
-    <h2>Admin + Beta Prep</h2>
-  </div>
-  <p class="week-intro">Days 8–14 = Wed 5/20 through Tue 5/26. Build the admin to 80% across the high-value surfaces, prep the beta cohort, and run a real 80–100 person dry run.</p>
+      <div class="day" id="day-2">
+        <div class="day-head"><span class="day-num">Day 2</span><span class="day-date">Thu 5/14</span></div>
+        <div class="day-title">Load test harness (bridge QA 25 → target 100)</div>
+        <ul>
+          <li>Wire up synthetic-participant tool (Agora Cloud Player SDK or k6 + headless Chrome via Playwright pool).</li>
+          <li>Step-load: 25 first (match QA baseline → validate harness), then 50, then 100. See where it breaks, not just whether.</li>
+          <li>At target 100: half publishing audio, 10 publishing video, 1 screen sharing.</li>
+          <li>Capture: connect time, audio dropouts, video freezes, Socket.IO latency, server CPU/RAM, Mongo pool saturation.</li>
+        </ul>
+      </div>
 
-  <div class="days-grid">
-    <div class="day-card">
-      <div class="day-meta"><span class="day-num">Day 8</span><span class="day-date">Wed 5/20</span></div>
-      <div class="day-title">Admin: Users + roles</div>
-      <div class="day-body"><ul>
-        <li>Lock down <code>Admin.jsx</code>: create, edit, suspend, reset password, assign roles.</li>
-        <li>Verify per-user tenant scoping holds (<code>SHARED_ACCOUNT_MODELS</code> cutover from 2026-04-24).</li>
-      </ul></div>
-    </div>
-    <div class="day-card">
-      <div class="day-meta"><span class="day-num">Day 9</span><span class="day-date">Thu 5/21</span></div>
-      <div class="day-title">Admin: Recordings + transcripts</div>
-      <div class="day-body"><ul>
-        <li>Lock down <code>AdminRecording.jsx</code>: list, search, play, share-link, delete, transcript export.</li>
-        <li>Confirm S3 lifecycle / retention rules are explicit.</li>
-      </ul></div>
-    </div>
-    <div class="day-card">
-      <div class="day-meta"><span class="day-num">Day 10</span><span class="day-date">Fri 5/22</span></div>
-      <div class="day-title">Admin: System settings + analytics shell</div>
-      <div class="day-body"><ul>
-        <li>Branding, defaults, feature toggles UI.</li>
-        <li>Read-only analytics page (DAU, meetings, minutes used) backed by Mongo aggregation. Accurate over pretty.</li>
-      </ul></div>
-    </div>
-    <div class="day-card">
-      <div class="day-meta"><span class="day-num">Day 11</span><span class="day-date">Sat 5/23</span></div>
-      <div class="day-title">Admin: Affiliates + Rewards parity</div>
-      <div class="day-body"><ul>
-        <li><code>AdminAffiliates.jsx</code> + <code>RewardsAdmin.jsx</code>: parity with Kim's current expectations.</li>
-        <li>If anything is broken, mark it Phase 2 in writing rather than rebuilding.</li>
-      </ul></div>
-    </div>
-    <div class="day-card">
-      <div class="day-meta"><span class="day-num">Day 12</span><span class="day-date">Sun 5/24</span></div>
-      <div class="day-title">Beta cohort prep</div>
-      <div class="day-body"><ul>
-        <li>Sign 5–10 beta users (Kim's choice). Onboarding doc. Bug-report path = QA triage board.</li>
-        <li>Production-equivalent staging URL: <code>studio.staging.stonelabs.app</code>. Confirm Cloudflare DNS.</li>
-      </ul></div>
-    </div>
-    <div class="day-card">
-      <div class="day-meta"><span class="day-num">Day 13</span><span class="day-date">Mon 5/25 · Memorial Day</span></div>
-      <div class="day-title">Buffer + internal dry run</div>
-      <div class="day-body"><ul>
-        <li>Light day. No beta-user-facing work (holiday).</li>
-        <li>Internal team-only 80-person dry run on staging using synthetic load + a few stakeholders. Capture issues.</li>
-        <li>Spot fixes only. No new feature work.</li>
-      </ul></div>
-    </div>
-    <div class="day-card">
-      <div class="day-meta"><span class="day-num">Day 14</span><span class="day-date">Tue 5/26 · Go/No-Go</span></div>
-      <div class="day-title">Beta dry run + go/no-go meeting</div>
-      <div class="day-body"><ul>
-        <li>Real 80–100 person webinar on staging with Kim + beta cohort + dummy attendees. Record. Score against Week 1 baseline.</li>
-        <li>Same-day go/no-go meeting with Kim: cut over to production in week 3, or extend staging beta by another sprint.</li>
-      </ul></div>
-    </div>
-  </div>
+      <div class="day" id="day-3">
+        <div class="day-head"><span class="day-num">Day 3</span><span class="day-date">Fri 5/15</span></div>
+        <div class="day-title">Fix top bugs from audit + load test</div>
+        <ul>
+          <li>Fix top issues from Day 1 audit + Day 2 load test. Prioritize anything that breaks &gt; 1% of joins or fails &gt; 10 participants.</li>
+          <li>Compare metrics from QA's recorded runs against Day 2's synthetic numbers at the same participant count.</li>
+          <li>If real 25 diverges from synthetic 25, the harness is lying — fix that before trusting the 100 number.</li>
+        </ul>
+      </div>
 
-  <!-- PARALLEL TRACKS -->
-  <div class="week-heading">
-    <span class="week-pill tracks">Parallel Tracks</span>
-    <h2>Run Alongside the 14 Days</h2>
-  </div>
-  <p class="tracks-intro">These don't compete with the MVP — they multiply it. Tracks owned by Matt multiply the throughput of the core 14-day work. Track C reflects Kim's role as project owner and creative-technical co-builder.</p>
+      <div class="day" id="day-4">
+        <div class="day-head"><span class="day-num">Day 4</span><span class="day-date">Sat 5/16</span></div>
+        <div class="day-title">Webinar flow + public landing</div>
+        <ul>
+          <li>Validate: scheduled webinar create → public landing → registration → join → broadcast → end → replay → recording surface.</li>
+          <li>Fix dashboard webinar end fallback edge cases.</li>
+        </ul>
+      </div>
 
-  <!-- Track A -->
-  <div class="track-card">
-    <div class="track-header">
-      <div class="track-label"><span class="track-pill">Track A</span></div>
-      <span class="track-timing">Days 1–7 · ~1.5 work days</span>
-    </div>
-    <div class="track-title">AI Infra Buildout</div>
-    <div class="track-body"><ul>
-      <li><strong>Day 1:</strong> Auto-fix bot wired to the rebuild repo + QA triage (add r-link-studio client, "Submit bug" link in admin nav).</li>
-      <li><strong>Day 2:</strong> Sentry client + server projects, Doppler DSNs, source maps, alert rules → #r-link-studio-alerts.</li>
-      <li><strong>Day 3:</strong> Deploy automation + /studio-redeploy slash command, smoke-test GitHub Action on every deploy.</li>
-      <li><strong>Day 4–5:</strong> Rivendell status pill polling /health, /api/studio/redeploy endpoint, Hall quick-action card.</li>
-      <li><strong>Day 6–7:</strong> CS email automation — extend cs-ticket-resolved to auto-notify beta users when their reported bug ships.</li>
-      <li>Detail: <code>r-link-studio-infra-integration-plan.md</code>.</li>
-    </ul></div>
-  </div>
+      <div class="day" id="day-5">
+        <div class="day-head"><span class="day-num">Day 5</span><span class="day-date">Sun 5/17</span></div>
+        <div class="day-title">Livestream + chat hardening</div>
+        <ul>
+          <li>Validate livestream path. Confirm RTM chat works at 100-person scale without Presence add-on (we are NOT enabling withPresence).</li>
+          <li>Stress chat: 100 participants posting once every 5 seconds for 5 minutes. Measure Socket.IO + RTM behavior.</li>
+        </ul>
+      </div>
 
-  <!-- Track B -->
-  <div class="track-card">
-    <div class="track-header">
-      <div class="track-label"><span class="track-pill">Track B</span></div>
-      <span class="track-timing">Both weeks</span>
-    </div>
-    <div class="track-title">Hire 2–3 AI-first Developers</div>
-    <div class="track-body"><ul>
-      <li><strong>Week 1 — Sourcing.</strong> Post in AI dev communities. Filter: ships code with AI tools daily, comfortable with PR-based workflows. Skip anyone who needs hand-holding through Doppler.</li>
-      <li><strong>Week 1 — Screening.</strong> 60–90 min paid pair session on a real Studio ticket in Claude Code. Watch how they think.</li>
-      <li><strong>Week 2 — Paid trial.</strong> Top 2–3 candidates start 2-week trials on scoped verticals: one owns admin, one owns webinar/livestream, one owns API + mobile parity bridge.</li>
-      <li><strong>Onboarding system.</strong> Per-repo <code>CLAUDE.md</code>, auto-fix bot, QA triage, Doppler, worktree slash commands — all already exist. Productive Day 1.</li>
-      <li><strong>Goal by Day 14:</strong> at least one trial hire shipping merged PRs, freeing Matt for architecture + deeper pairing time with Kim.</li>
-    </ul></div>
-  </div>
+      <div class="day" id="day-6">
+        <div class="day-head"><span class="day-num">Day 6</span><span class="day-date">Mon 5/18</span></div>
+        <div class="day-title">Screen share + recording</div>
+        <ul>
+          <li>Validate screen share with viewer layout retention (commit <code>d57b384</code> fix).</li>
+          <li>Validate recording → S3 → playback. Confirm Deepgram Nova-3 transcripts land in JSONL.</li>
+        </ul>
+      </div>
 
-  <!-- Track D -->
-  <div class="track-card">
-    <div class="track-header">
-      <div class="track-label"><span class="track-pill">Track D</span></div>
-      <span class="track-timing">Days 1–4</span>
+      <div class="day special" id="day-7">
+        <div class="day-head"><span class="day-num">Day 7</span><span class="day-date">Tue 5/19</span></div>
+        <div class="day-title">Week 1 load test repeat + Kim status</div>
+        <ul>
+          <li>Re-run the Day 2 load test. Compare deltas. Capture metric baseline.</li>
+          <li>5-bullet status to Kim: what's locked, what's flaky, what's deferred.</li>
+        </ul>
+      </div>
     </div>
-    <div class="track-title">Monday.com as System-of-Record</div>
-    <div class="track-body"><ul>
-      <li><strong>Day 1 — Board structure.</strong> Stand up "R-Link Studio Development" board. Groups: Live Bugs, In Fixing, Ready for QA, Done This Sprint, Roadmap, Hires + Trials. Team gets access at right permission level.</li>
-      <li><strong>Day 2 — QA triage ↔ Monday sync.</strong> New triage ticket auto-creates a Monday item. Status changes sync both directions. Comments mirror as Monday updates.</li>
-      <li><strong>Day 3 — Deploys + Sentry → Monday.</strong> Every Vercel/Railway deploy posts a Monday update on relevant items. Sentry new-issue alerts open Monday items in Live Bugs automatically.</li>
-      <li><strong>Day 4 — Kim's work + hiring pipelines on Monday.</strong> Kim's PRs and pairing sessions live in the same Monday groups as everyone else's work. Trial-hire applicants + screens (Track B) tracked in a Hires group.</li>
-      <li><strong>Beyond Day 4:</strong> every new automation drops events into Monday as part of its definition of done.</li>
-    </ul></div>
-  </div>
+  </section>
 
-  <!-- Track C - REWRITTEN -->
-  <div class="track-card track-kim">
-    <div class="track-header">
-      <div class="track-label"><span class="track-pill">Track C</span></div>
-      <span class="track-timing">Both weeks</span>
+  <section>
+    <h2><span class="week-pill" style="background:linear-gradient(135deg,var(--rlink-green),var(--rlink-cyan))">Week 2</span> Admin + Beta Prep</h2>
+    <p class="section-sub">Days 8-14 = Wed 5/20 through Tue 5/26. Build the admin to 80% across the high-value surfaces, prep the beta cohort, and run a real 80-100 person dry run.</p>
+
+    <div class="days">
+      <div class="day" id="day-8">
+        <div class="day-head"><span class="day-num">Day 8</span><span class="day-date">Wed 5/20</span></div>
+        <div class="day-title">Admin: Users + roles</div>
+        <ul>
+          <li>Lock down <code>Admin.jsx</code>: create, edit, suspend, reset password, assign roles.</li>
+          <li>Verify per-user tenant scoping holds (SHARED_ACCOUNT_MODELS cutover from 2026-04-24).</li>
+        </ul>
+      </div>
+
+      <div class="day" id="day-9">
+        <div class="day-head"><span class="day-num">Day 9</span><span class="day-date">Thu 5/21</span></div>
+        <div class="day-title">Admin: Recordings + transcripts</div>
+        <ul>
+          <li>Lock down <code>AdminRecording.jsx</code>: list, search, play, share-link, delete, transcript export.</li>
+          <li>Confirm S3 lifecycle / retention rules are explicit.</li>
+        </ul>
+      </div>
+
+      <div class="day" id="day-10">
+        <div class="day-head"><span class="day-num">Day 10</span><span class="day-date">Fri 5/22</span></div>
+        <div class="day-title">Admin: System settings + analytics shell</div>
+        <ul>
+          <li>Branding, defaults, feature toggles UI.</li>
+          <li>Read-only analytics page (DAU, meetings, minutes used) backed by Mongo aggregation. Accurate over pretty.</li>
+        </ul>
+      </div>
+
+      <div class="day" id="day-11">
+        <div class="day-head"><span class="day-num">Day 11</span><span class="day-date">Sat 5/23</span></div>
+        <div class="day-title">Admin: Affiliates + Rewards parity</div>
+        <ul>
+          <li><code>AdminAffiliates.jsx</code> + <code>RewardsAdmin.jsx</code>: parity with Kim's current expectations.</li>
+          <li>If anything is broken, mark it Phase 2 in writing rather than rebuilding.</li>
+        </ul>
+      </div>
+
+      <div class="day" id="day-12">
+        <div class="day-head"><span class="day-num">Day 12</span><span class="day-date">Sun 5/24</span></div>
+        <div class="day-title">Beta cohort prep</div>
+        <ul>
+          <li>Sign 5-10 beta users (Kim's choice). Onboarding doc. Bug-report path = QA triage board.</li>
+          <li>Production-equivalent staging URL: <code>studio.staging.stonelabs.app</code>. Confirm Cloudflare DNS.</li>
+        </ul>
+      </div>
+
+      <div class="day buffer" id="day-13">
+        <div class="day-head"><span class="day-num">Day 13</span><span class="day-date">Mon 5/25 · Memorial Day</span></div>
+        <div class="day-title">Buffer + internal dry run</div>
+        <ul>
+          <li>Light day. No beta-user-facing work (holiday).</li>
+          <li>Internal team-only 80-person dry run on staging using synthetic load + a few stakeholders. Capture issues.</li>
+          <li>Spot fixes only. No new feature work.</li>
+        </ul>
+      </div>
+
+      <div class="day special" id="day-14">
+        <div class="day-head"><span class="day-num">Day 14</span><span class="day-date">Tue 5/26 · Go/No-Go</span></div>
+        <div class="day-title">Beta dry run + go/no-go meeting</div>
+        <ul>
+          <li>Real 80-100 person webinar on staging with Kim + beta cohort + dummy attendees. Record. Score against Week 1 baseline.</li>
+          <li>Same-day go/no-go meeting with Kim: cut over to production in week 3, or extend staging beta by another sprint.</li>
+        </ul>
+      </div>
     </div>
-    <div class="track-title">Kim — Project Owner & Creative-Technical Co-Builder</div>
-    <div class="track-body">
-      <p>Kim is the project owner and the creative-technical lead on Studio. The product vision, user experience, and Phase 2 cut decisions are hers. She is also actively building inside the sprint — shipping PRs in her zone, pairing with Matt on the harder work to close the technical gap quickly, and keeping the fusion of creative direction and code that built Studio originally.</p>
+  </section>
+
+  <section>
+    <h2><span class="week-pill" style="background:linear-gradient(135deg,var(--rlink-pink),var(--rlink-purple))">Parallel Tracks</span> Run Alongside the 14 Days</h2>
+    <p class="section-sub">These don't compete with the MVP — they multiply it. Tracks owned by Matt multiply the throughput of the core 14-day work. Track C reflects Kim's role as project owner and creative-technical co-builder.</p>
+
+    <div class="days" style="grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));">
+
+      <div class="day" style="border-color: rgba(6,182,212,0.30);">
+        <div class="day-head"><span class="day-num" style="color: var(--rlink-cyan);">Track A</span><span class="day-date">Days 1-7 · ~1.5 work days</span></div>
+        <div class="day-title">AI Infra Buildout</div>
+        <ul>
+          <li><strong>Day 1:</strong> Auto-fix bot wired to the rebuild repo + QA triage (add <code>r-link-studio</code> client, "Submit bug" link in admin nav).</li>
+          <li><strong>Day 2:</strong> Sentry client + server projects, Doppler DSNs, source maps, alert rules → <code>#r-link-studio-alerts</code>.</li>
+          <li><strong>Day 3:</strong> Deploy automation + <code>/studio-redeploy</code> slash command, smoke-test GitHub Action on every deploy.</li>
+          <li><strong>Day 4-5:</strong> Rivendell status pill polling <code>/health</code>, <code>/api/studio/redeploy</code> endpoint, Hall quick-action card.</li>
+          <li><strong>Day 6-7:</strong> CS email automation — extend <code>cs-ticket-resolved</code> to auto-notify beta users when their reported bug ships.</li>
+          <li>Detail: <code>r-link-studio-infra-integration-plan.md</code>.</li>
+        </ul>
+      </div>
+
+      <div class="day" style="border-color: rgba(106,31,191,0.30);">
+        <div class="day-head"><span class="day-num" style="color: var(--rlink-purple);">Track B</span><span class="day-date">Both weeks</span></div>
+        <div class="day-title">Hire 2-3 AI-first Developers</div>
+        <ul>
+          <li><strong>Week 1 — Sourcing.</strong> Post in AI dev communities. Filter: ships code with AI tools daily, comfortable with PR-based workflows. Skip anyone who needs hand-holding through Doppler.</li>
+          <li><strong>Week 1 — Screening.</strong> 60-90 min paid pair session on a real Studio ticket in Claude Code. Watch how they think.</li>
+          <li><strong>Week 2 — Paid trial.</strong> Top 2-3 candidates start 2-week trials on scoped verticals: one owns admin, one owns webinar/livestream, one owns API + mobile parity bridge.</li>
+          <li><strong>Onboarding system.</strong> Per-repo <code>CLAUDE.md</code>, auto-fix bot, QA triage, Doppler, worktree slash commands — all already exist. Productive Day 1.</li>
+          <li><strong>Goal by Day 14:</strong> at least one trial hire shipping merged PRs, freeing Matt for architecture + deeper pairing time with Kim.</li>
+        </ul>
+      </div>
+
+      <div class="day" style="border-color: rgba(236,72,153,0.32);">
+        <div class="day-head"><span class="day-num" style="color: var(--rlink-pink);">Track D</span><span class="day-date">Days 1-4</span></div>
+        <div class="day-title">Monday.com as System-of-Record</div>
+        <ul>
+          <li><strong>Day 1 — Board structure.</strong> Stand up "R-Link Studio Development" board. Groups: Live Bugs, In Fixing, Ready for QA, Done This Sprint, Roadmap, Hires + Trials. Team gets access at right permission level.</li>
+          <li><strong>Day 2 — QA triage ↔ Monday sync.</strong> New triage ticket auto-creates a Monday item. Status changes sync both directions. Comments mirror as Monday updates.</li>
+          <li><strong>Day 3 — Deploys + Sentry → Monday.</strong> Every Vercel/Railway deploy posts a Monday update on relevant items. Sentry new-issue alerts open Monday items in Live Bugs automatically.</li>
+          <li><strong>Day 4 — Kim's work + hiring pipelines on Monday.</strong> Kim's PRs and pairing sessions live in the same Monday groups as everyone else's work. Trial-hire applicants + screens (Track B) tracked in a Hires group.</li>
+          <li><strong>Beyond Day 4:</strong> every new automation drops events into Monday as part of its definition of done.</li>
+        </ul>
+      </div>
+
+      <div class="day track-kim">
+        <div class="day-head"><span class="day-num" style="color: var(--rlink-purple);">Track C</span><span class="day-date">Both weeks</span></div>
+        <div class="day-title">Kim — Project Owner & Creative-Technical Co-Builder</div>
+        <ul>
+          <li>Kim is the project owner and the creative-technical lead on Studio. Product vision, user experience, and Phase 2 cut decisions are hers. She is also actively building inside the sprint — keeping the fusion of creative direction and code that built Studio originally.</li>
+          <li><strong>What Kim ships:</strong> UI components and user-facing flows in her zone, admin panel work, onboarding and beta experience, creative direction translated directly into code where she can build it solo.</li>
+          <li><strong>What Kim pairs with Matt on:</strong> work requiring senior architectural judgment, patterns she hasn't internalized yet (with the explicit goal of internalizing them), production hardening of features she's built.</li>
+          <li><strong>What Kim owns as project lead:</strong> Phase 2 cut line (Day 10), all product and UX direction, final approval on beta launch readiness, customer-facing communication and rollout.</li>
+          <li><strong>Working cadence:</strong> Kim's PRs flow through the same Monday structure as anyone else's. Product input on Matt's work happens inline in PRs and Slack — no formal review sync. Pairing sessions scheduled as work demands.</li>
+          <li><strong>Goal by Day 14:</strong> Studio ships with Kim materially in the build — project owner who is also shipping code in her zone alongside Matt.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2 class="green-stripe">Daily Rhythm</h2>
+    <div class="list-section">
       <ul>
-        <li><strong>What Kim ships:</strong> UI components and user-facing flows in her zone of competency, admin panel work, onboarding and beta experience implementation, creative direction translated directly into code where she can build it solo.</li>
-        <li><strong>What Kim pairs with Matt on:</strong> anything requiring senior architectural judgment, patterns she hasn't internalized yet (with the explicit goal of internalizing them through doing), production hardening of features she's built.</li>
-        <li><strong>What Kim owns as project lead:</strong> Phase 2 cut line decision (Day 10), all product and UX direction, final approval on beta launch readiness, customer-facing communication and rollout.</li>
-        <li><strong>Working cadence:</strong> Kim's PRs flow through the same Monday.com structure as anyone else's. Product input on Matt's work happens inline in PRs and Slack — no formal review sync. Pairing sessions scheduled as work demands, not on a fixed cadence. Matt provides technical guidance and unblocking; Kim provides product clarity and ownership.</li>
-        <li><strong>Goal by Day 14:</strong> Studio ships with Kim materially in the build — not as a contributor receiving tickets, but as the project owner who is also shipping code in her zone alongside Matt.</li>
+        <li><strong>9:00 ET:</strong> 10-minute standup with self (Rivendell Council). Top 3 for the day.</li>
+        <li><strong>16:00 ET:</strong> status bullet to Kim (Slack DM) — what shipped, what's blocked, tomorrow's top 3.</li>
+        <li><strong>Friday:</strong> 30-min sync with James to align on Flutter parity items + share the change log bot output.</li>
+        <li><strong>Monday:</strong> 15-min sync with Kim — review the week ahead, identify pairing sessions needed, align on what Kim is building solo vs. with Matt.</li>
       </ul>
     </div>
-  </div>
+  </section>
 
-  <!-- Daily Rhythm -->
-  <div class="section-block">
-    <h3>Daily Rhythm</h3>
-    <ul>
-      <li><strong>9:00 ET:</strong> 10-minute standup with self (Rivendell Council). Top 3 for the day.</li>
-      <li><strong>16:00 ET:</strong> status bullet to Kim (Slack DM) — what shipped, what's blocked, tomorrow's top 3.</li>
-      <li><strong>Friday:</strong> 30-min sync with James to align on Flutter parity items + share the change log bot output.</li>
-      <li><strong>Monday:</strong> 15-min sync with Kim — review the week ahead, identify pairing sessions needed, align on what Kim is building solo vs. with Matt.</li>
-    </ul>
-  </div>
+  <section>
+    <h2 class="green-stripe">Risks + Mitigations</h2>
+    <div class="list-section">
+      <ol>
+        <li><strong>Agora limits at 100.</strong> Confirm tier in writing Day 1. If we're capped below 100, escalate to Kim same day.</li>
+        <li><strong>Mongo at scale.</strong> DigitalOcean managed Mongo 8 should handle this load, but verify Railway connection pool size. Bump if needed.</li>
+        <li><strong>Recording S3 costs.</strong> Validate retention policy before the beta dry run or fees spike.</li>
+        <li><strong>Edge cases that need real engineering.</strong> Phase 2 backlog gets a clear definition by Day 10 so Kim sees what's deferred and why.</li>
+        <li><strong>Real-time bugs surface only at scale.</strong> Day 2, Day 7, Day 13 dedicated load tests catch what real users would find on Day 15.</li>
+        <li><strong>Weekend pace.</strong> 14 calendar days includes Sat 5/16, Sun 5/17, Sat 5/23, Sun 5/24 as real work days. Build in a 1-day slip buffer mentally — if Day 7 or 13 slips, Day 14's dry run still has to happen.</li>
+      </ol>
+    </div>
+  </section>
 
-  <!-- Risks -->
-  <div class="section-block">
-    <h3>Risks + Mitigations</h3>
-    <ol>
-      <li><strong>Agora limits at 100.</strong> Confirm tier in writing Day 1. If we're capped below 100, escalate to Kim same day.</li>
-      <li><strong>Mongo at scale.</strong> DigitalOcean managed Mongo 8 should handle this load, but verify Railway connection pool size. Bump if needed.</li>
-      <li><strong>Recording S3 costs.</strong> Validate retention policy before the beta dry run or fees spike.</li>
-      <li><strong>Edge cases that need real engineering.</strong> Phase 2 backlog gets a clear definition by Day 10 so Kim sees what's deferred and why.</li>
-      <li><strong>Real-time bugs surface only at scale.</strong> Day 2, Day 7, Day 13 dedicated load tests catch what real users would find on Day 15.</li>
-      <li><strong>Weekend pace.</strong> 14 calendar days includes Sat 5/16, Sun 5/17, Sat 5/23, Sun 5/24 as real work days. Build in a 1-day slip buffer mentally — if Day 7 or 13 slips, Day 14's dry run still has to happen.</li>
-    </ol>
-  </div>
+  <section>
+    <h2 class="green-stripe">Phase 2 (post-Day 14, week 3+)</h2>
+    <div class="list-section">
+      <ul>
+        <li>Production cutover + legacy retirement plan</li>
+        <li>Stripe billing UI in admin</li>
+        <li>Integration UI (Slack, Zapier, etc.)</li>
+        <li>Mobile (James's Flutter) parity catch-up</li>
+        <li>Public API doc + key management UI for <code>/external/v1/*</code></li>
+      </ul>
+    </div>
+  </section>
 
-  <!-- Phase 2 -->
-  <div class="section-block">
-    <h3>Phase 2 (post-Day 14, week 3+)</h3>
-    <ul>
-      <li>Production cutover + legacy retirement plan</li>
-      <li>Stripe billing UI in admin</li>
-      <li>Integration UI (Slack, Zapier, etc.)</li>
-      <li>Mobile (James's Flutter) parity catch-up</li>
-      <li>Public API doc + key management UI for /external/v1/*</li>
-    </ul>
-  </div>
-
-  <!-- Footer -->
-  <div class="footer">
-    <span>R-Link Studio · 14-Day MVP Plan · Internal</span>
-    <span>Owner: Kim · Lead Dev: Matt · Start: Wed 2026-05-13 · Day-14: Tue 2026-05-26</span>
-  </div>
+  <footer>
+    <div>R-Link Studio · 14-Day MVP Plan · Internal</div>
+    <div>Owner: Kim · Lead Dev: Matt · Start: Wed 2026-05-13 · Day-14: Tue 2026-05-26</div>
+  </footer>
 
 </div>
+
+<script>
+  // Timeline interactive behavior
+  (function() {
+    const nodes = document.querySelectorAll('.timeline-node');
+    const railProgress = document.getElementById('rail-progress');
+    const rail = document.querySelector('.timeline-rail');
+
+    // Animate progress fill on load — fills to 100% over 1.4s,
+    // giving the timeline a "this is the journey" feel
+    setTimeout(() => {
+      if (rail && railProgress) {
+        railProgress.style.width = rail.offsetWidth + 'px';
+      }
+    }, 350);
+
+    // Click any timeline node → smooth-scroll to the corresponding day card
+    // and pulse it briefly so the user knows where they landed
+    nodes.forEach(node => {
+      node.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const targetId = node.getAttribute('data-target');
+        const target = document.getElementById(targetId);
+        if (!target) return;
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        target.classList.add('flash');
+        setTimeout(() => target.classList.remove('flash'), 1400);
+      });
+    });
+
+    // Re-fill progress bar on window resize so the rail stays accurate
+    window.addEventListener('resize', () => {
+      if (rail && railProgress) {
+        railProgress.style.transition = 'none';
+        railProgress.style.width = rail.offsetWidth + 'px';
+        requestAnimationFrame(() => {
+          railProgress.style.transition = '';
+        });
+      }
+    });
+  })();
+
+  // Click easter egg — spawn random emoji on click anywhere except timeline nodes
+  // (don't want emojis flying every time someone navigates the timeline)
+  const emojis = ['🎬', '🎙️', '📹', '✨', '🚀', '🎯', '⚡', '💜', '💚', '🔮'];
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.timeline-node')) return;
+    const el = document.createElement('div');
+    el.className = 'easter-egg';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = e.clientX + 'px';
+    el.style.top = e.clientY + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1200);
+  });
+</script>
+
 </body>
 </html>
